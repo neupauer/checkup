@@ -1,0 +1,30 @@
+{
+  "name": "checkup-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@headlessui/react": "^0.2.0",
+    "classnames": "^2.2.6",
+    "copy-to-clipboard": "^3.3.1",
+    "date-fns": "^2.16.1",
+    "lodash": "^4.17.20",
+    "meilisearch": "^0.14.2",
+    "next": "9.5.5",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-hook-form": "^6.9.5",
+    "react-table": "^7.6.0",
+    "swr": "^0.3.6",
+    "urlcat": "^2.0.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/ui": "^0.6.2",
+    "autoprefixer": "^9.0.0",
+    "tailwindcss": "^1.9.5"
+  }
+}
