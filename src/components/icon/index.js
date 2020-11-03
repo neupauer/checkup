@@ -7,3 +7,4 @@ export { default as Database } from "./database";
 export { default as TrendingUp } from "./trending-up";
 export { default as Adjustments } from "./adjustments";
 export { default as CheckCircle } from "./check-circle";
+export { default as QuestionMarkCircle } from "./question-mark-circle";
