@@ -1,12 +1,31 @@
 import { Line } from "@reactchartjs/react-chart.js";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
+import Link from "~/components/link";
 import LayoutContent from "~/components/console-layout-content";
 import Layout, { useLayout } from "~/components/console-layout";
 import Screen from "~/components/screen";
+import firebase from "~/integrations/firebase";
 
 function Reports({}) {
   const { openSidebar } = useLayout();
+  const [reports, setReports] = useState();
+
+  useEffect(() => {
+    return firebase
+      .firestore()
+      .collection("reports")
+      .onSnapshot((snapshot) => {
+        const r = [];
+        snapshot.forEach((doc) => {
+          r.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+        setReports(r);
+      });
+  }, []);
 
   return (
     <Screen title="Reports">
@@ -83,43 +102,27 @@ function Reports({}) {
           <main className="flex-1 overflow-y-auto focus:outline-none" tabIndex={0}>
             <div className="relative max-w-4xl mx-auto md:px-8 xl:px-0">
               <div className="pt-10 pb-16">
-                <div className="px-4 sm:px-6 md:px-0">
+                <div className="flex items-center justify-between px-4 sm:px-6 md:px-0">
                   <h1 className="text-3xl font-extrabold leading-9 text-gray-900">Reports</h1>
+                  <Link href="/reports/create">
+                    {({ active }) => (
+                      <span className="inline-flex rounded-md shadow-sm">
+                        <button
+                          type="button"
+                          className="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-blue-600 border border-transparent rounded-md hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-700"
+                        >
+                          Create Daily Report
+                        </button>
+                      </span>
+                    )}
+                  </Link>
                 </div>
                 <div className="px-4 sm:px-6 md:px-0">
                   <div className="py-6">
-                    {/* Tabs */}
-                    <div className="lg:hidden">
-                      <select
-                        aria-label="Selected tab"
-                        className="block w-full py-2 pl-3 pr-10 mt-1 text-base leading-6 transition duration-150 ease-in-out border-gray-300 form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
-                      >
-                        <option selected>Statistics</option>
-                        <option>Body Map</option>
-                      </select>
-                    </div>
-                    <div className="hidden lg:block">
-                      <div className="border-b border-gray-200">
-                        <nav className="flex -mb-px">
-                          <a
-                            href="#"
-                            className="px-1 py-4 text-sm font-medium leading-5 text-blue-600 whitespace-no-wrap border-b-2 border-blue-500 focus:outline-none focus:text-blue-800 focus:border-blue-700"
-                          >
-                            Statistics
-                          </a>
-                          <a
-                            href="#"
-                            className="px-1 py-4 ml-8 text-sm font-medium leading-5 text-gray-500 whitespace-no-wrap border-b-2 border-transparent hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300"
-                          >
-                            Body Map
-                          </a>
-                        </nav>
-                      </div>
-                    </div>
                     {/* Description list with inline editing */}
                     <div className="mt-10 space-y-6">
                       <div className="space-y-1">
-                        <h3 className="text-lg font-medium leading-6 text-gray-900">Daily Statistics</h3>
+                        <h3 className="text-lg font-medium leading-6 text-gray-900">Daily Reports</h3>
                         <p className="max-w-2xl text-sm leading-5 text-gray-500">
                           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam ullam ratione magnam.
                         </p>
@@ -133,22 +136,57 @@ function Reports({}) {
                                   <thead>
                                     <tr>
                                       <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
-                                        Name
-                                      </th>
-                                      <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
-                                        Value
-                                      </th>
-                                      <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
-                                        Status
-                                      </th>
-                                      <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
                                         Caregiver
                                       </th>
+                                      <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
+                                        Date
+                                      </th>
+                                      <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
+                                        Tiem of shift
+                                      </th>
+                                      {/* <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
+                                        Caregiver
+                                      </th> */}
                                       <th className="px-6 py-3 bg-gray-50" />
                                     </tr>
                                   </thead>
                                   <tbody className="bg-white divide-y divide-gray-200">
-                                    <tr>
+                                    {(reports || []).map((report) => (
+                                      <tr>
+                                        <td className="px-6 py-4 text-sm font-medium leading-5 text-gray-900 whitespace-no-wrap">
+                                          {report["full-name"]}
+                                        </td>
+
+                                        <td className="px-6 py-4 whitespace-no-wrap">
+                                          <div className="flex items-center">
+                                            <div className="">
+                                              <div className="text-sm leading-5 text-gray-900">{report["date"]}</div>
+                                              {/* <div className="text-sm leading-5 text-gray-500">
+                                                {report["time-of-shift"]}
+                                              </div> */}
+                                            </div>
+                                          </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-no-wrap">
+                                          <span className="text-sm leading-5 text-gray-900">
+                                            {report["time-of-shift"]}
+                                          </span>
+                                        </td>
+                                        {/* <td className="px-6 py-4 whitespace-no-wrap">
+                                          <span className="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
+                                            {report["time-of-shift"]}
+                                          </span>
+                                        </td> */}
+
+                                        <td className="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap">
+                                          <Link href={`/reports/show/${report.id}`}>
+                                            <a className="text-blue-600 hover:text-blue-900">Show</a>
+                                          </Link>
+                                        </td>
+                                      </tr>
+                                    ))}
+
+                                    {/* <tr>
                                       <td className="px-6 py-4 whitespace-no-wrap">
                                         <div className="flex items-center">
                                           <div className="flex-shrink-0 w-8 h-8">
@@ -194,7 +232,7 @@ function Reports({}) {
                                         Dr. Jean Doe
                                       </td>
                                       <td className="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap">
-                                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                                        <a href="#" className="text-blue-600 hover:text-blue-900">
                                           Show
                                         </a>
                                       </td>
@@ -246,7 +284,7 @@ function Reports({}) {
                                         Dr. Jean Doe
                                       </td>
                                       <td className="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap">
-                                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                                        <a href="#" className="text-blue-600 hover:text-blue-900">
                                           Show
                                         </a>
                                       </td>
@@ -302,7 +340,7 @@ function Reports({}) {
                                         Dr. Jean Doe
                                       </td>
                                       <td className="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap">
-                                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                                        <a href="#" className="text-blue-600 hover:text-blue-900">
                                           Show
                                         </a>
                                       </td>
@@ -354,11 +392,11 @@ function Reports({}) {
                                         Dr. Jean Doe
                                       </td>
                                       <td className="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap">
-                                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                                        <a href="#" className="text-blue-600 hover:text-blue-900">
                                           Show
                                         </a>
                                       </td>
-                                    </tr>
+                                    </tr> */}
                                   </tbody>
                                 </table>
                               </div>
