@@ -105,7 +105,7 @@ function ConsoleLayout({ title, children }) {
         </div>
       </div>
 
-      <div className="flex flex-col flex-1 w-0 overflow-hidden">{children}</div>
+      {children}
     </div>
   );
 }
@@ -113,7 +113,7 @@ function ConsoleLayout({ title, children }) {
 function Layout({ children }) {
   return (
     <LayoutProvider>
-        <ConsoleLayout>{children}</ConsoleLayout>
+      <ConsoleLayout>{children}</ConsoleLayout>
     </LayoutProvider>
   );
 }

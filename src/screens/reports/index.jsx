@@ -99,7 +99,8 @@ function Reports({}) {
               </div>
             </div>
           </div>
-          <main className="flex-1 overflow-y-auto focus:outline-none" tabIndex={0}>
+
+          <main className="flex-1 overflow-y-scroll focus:outline-none" tabIndex={0}>
             <div className="relative max-w-4xl mx-auto md:px-8 xl:px-0">
               <div className="pt-10 pb-16">
                 <div className="flex items-center justify-between px-4 sm:px-6 md:px-0">
