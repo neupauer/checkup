@@ -57,7 +57,7 @@ function Dashboard({}) {
   return (
     <Screen title="Dashboard">
       <LayoutContent title="Dashboard">
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 w-0">
           <div className="w-full max-w-4xl mx-auto md:px-8 xl:px-0">
             <div className="relative z-10 flex flex-shrink-0 h-16 bg-white border-b border-gray-200">
               <button
