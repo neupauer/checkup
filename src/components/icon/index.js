@@ -2,6 +2,7 @@ export { default as X } from "./x";
 export { default as Key } from "./key";
 export { default as Home } from "./home";
 export { default as Heart } from "./heart";
+export { default as Emoji } from "./emoji";
 export { default as XCircle } from "./x-circle";
 export { default as Database } from "./database";
 export { default as TrendingUp } from "./trending-up";

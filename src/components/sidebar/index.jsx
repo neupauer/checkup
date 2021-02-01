@@ -88,6 +88,23 @@ function Sidebar() {
                 )}
               </Link>
 
+              <Link href="/body-map">
+                {({ active }) => (
+                  <a
+                    className={cls(
+                      "flex items-center px-2 py-3 sm:py-2 text-sm font-medium leading-5 transition duration-150 ease-in-out rounded-md group focus:outline-none",
+                      {
+                        "text-gray-600 hover:text-gray-900 hover:bg-gray-50 focus:text-gray-900 focus:bg-gray-50": !active,
+                        "text-gray-900 bg-gray-100 hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-200": active,
+                      }
+                    )}
+                  >
+                    <Icon.Emoji className="w-6 h-6 mr-3 text-gray-500 transition duration-150 ease-in-out group-hover:text-gray-500 group-focus:text-gray-600" />
+                    Body Map
+                  </a>
+                )}
+              </Link>
+
               <Link href="/settings">
                 {({ active }) => (
                   <a

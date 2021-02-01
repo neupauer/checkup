@@ -5,8 +5,10 @@ import LayoutContent from "~/components/console-layout-content";
 import Layout, { useLayout } from "~/components/console-layout";
 import firebase from "~/integrations/firebase";
 import Screen from "~/components/screen";
-import Link from "~/components/link";
 import { useRouter } from "next/router";
+import axios from "axios";
+
+import Link from "~/components/link";
 
 function Reports({}) {
   const { query } = useRouter();
@@ -18,13 +20,10 @@ function Reports({}) {
 
   useEffect(() => {
     if (id) {
-      return firebase
-        .firestore()
-        .collection("reports")
-        .doc(id)
-        .onSnapshot((snapshot) => {
-          setReport(snapshot.data());
-        });
+      axios.get(`/api/reports/${id}`).then((response) => {
+        const { report = {} } = response.data || {};
+        setReport(report);
+      });
     }
   }, [id]);
 
@@ -245,7 +244,7 @@ function Reports({}) {
                                         rows={4}
                                         className="block w-full mt-1 transition duration-150 ease-in-out form-textarea sm:text-sm sm:leading-5"
                                         readOnly
-                                        defaultValue={report["family-and-friends-feedback"]}
+                                        defaultValue={report["familyAndFriendsFeedback"]}
                                       />
                                     </div>
                                   </div>
@@ -276,7 +275,7 @@ function Reports({}) {
                                         rows={5}
                                         className="block w-full mt-1 transition duration-150 ease-in-out form-textarea sm:text-sm sm:leading-5"
                                         readOnly
-                                        defaultValue={report["prn-or-additional-medications"]}
+                                        defaultValue={report["prnOrAdditionalMedications"]}
                                       />
                                     </div>
                                     <div className="flex flex-row items-center">
@@ -379,7 +378,7 @@ function Reports({}) {
                                         rows={8}
                                         className="block w-full mt-1 transition duration-150 ease-in-out form-textarea sm:text-sm sm:leading-5"
                                         readOnly
-                                        defaultValue={report["additional-notes"]}
+                                        defaultValue={report["additionalNotes"]}
                                       />
                                     </div>
                                   </div>
@@ -416,7 +415,7 @@ function Reports({}) {
                                     name="time-of-shift"
                                     className="block w-full mt-1 transition duration-150 ease-in-out form-textarea sm:text-sm sm:leading-5"
                                     readOnly
-                                    defaultValue={report["time-of-shift"]}
+                                    defaultValue={report["timeOfShift"]}
                                   />
                                 </div>
 
@@ -434,7 +433,7 @@ function Reports({}) {
                                     className="block w-full mt-1 transition duration-150 ease-in-out form-textarea sm:text-sm sm:leading-5"
                                     placeholder=""
                                     readOnly
-                                    defaultValue={report["full-name"]}
+                                    defaultValue={report["fullName"]}
                                   />
                                 </div>
                               </div>

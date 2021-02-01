@@ -7,6 +7,7 @@ import firebase from "~/integrations/firebase";
 import Screen from "~/components/screen";
 import Link from "~/components/link";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 function Reports({}) {
   const { push } = useRouter();
@@ -14,13 +15,9 @@ function Reports({}) {
   const { register, handleSubmit, watch, errors, formState } = useForm();
 
   const onSubmit = async (data) => {
-    await firebase
-      .firestore()
-      .collection("reports")
-      .add({ ...data })
-      .then((snapshot) => {
-        push(`/reports/show/${snapshot.id}`);
-      });
+    axios.post("/api/reports", { data: { attributes: data } }).then((response) => {
+      push(`/reports/show/${response.data.report.id}`);
+    });
   };
 
   return (

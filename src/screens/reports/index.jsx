@@ -1,30 +1,20 @@
-import { Line } from "@reactchartjs/react-chart.js";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-import Link from "~/components/link";
 import LayoutContent from "~/components/console-layout-content";
 import Layout, { useLayout } from "~/components/console-layout";
 import Screen from "~/components/screen";
-import firebase from "~/integrations/firebase";
+import Link from "~/components/link";
 
 function Reports({}) {
   const { openSidebar } = useLayout();
   const [reports, setReports] = useState();
 
   useEffect(() => {
-    return firebase
-      .firestore()
-      .collection("reports")
-      .onSnapshot((snapshot) => {
-        const r = [];
-        snapshot.forEach((doc) => {
-          r.push({
-            id: doc.id,
-            ...doc.data(),
-          });
-        });
-        setReports(r);
-      });
+    axios.get("/api/reports").then((response) => {
+      const { reports = [] } = response.data || {};
+      setReports(reports);
+    });
   }, []);
 
   return (
@@ -153,9 +143,9 @@ function Reports({}) {
                                   </thead>
                                   <tbody className="bg-white divide-y divide-gray-200">
                                     {(reports || []).map((report) => (
-                                      <tr>
+                                      <tr key={report.id}>
                                         <td className="px-6 py-4 text-sm font-medium leading-5 text-gray-900 whitespace-no-wrap">
-                                          {report["full-name"]}
+                                          {report["fullName"]}
                                         </td>
 
                                         <td className="px-6 py-4 whitespace-no-wrap">
@@ -170,7 +160,7 @@ function Reports({}) {
                                         </td>
                                         <td className="px-6 py-4 whitespace-no-wrap">
                                           <span className="text-sm leading-5 text-gray-900">
-                                            {report["time-of-shift"]}
+                                            {report["timeOfShift"]}
                                           </span>
                                         </td>
                                         {/* <td className="px-6 py-4 whitespace-no-wrap">

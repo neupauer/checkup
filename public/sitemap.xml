@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://checkup.vercel.app//body-map</loc>
+  </url>
+
+  <url>
+    <loc>https://checkup.vercel.app//body</loc>
+  </url>
+
+  <url>
+    <loc>https://checkup.vercel.app//index</loc>
+  </url>
+
+  <url>
+    <loc>https://checkup.vercel.app//map</loc>
+  </url>
+
+  <url>
+    <loc>https://checkup.vercel.app//map2</loc>
+  </url>
+
+  <url>
+    <loc>https://checkup.vercel.app//reports</loc>
+  </url>
+
+  <url>
+    <loc>https://checkup.vercel.app//settings</loc>
+  </url>
+
+  <url>
+    <loc>https://checkup.vercel.app//reports/create</loc>
+  </url>
+
+  <url>
+    <loc>https://checkup.vercel.app//reports/show/[id]</loc>
+  </url>
+</urlset>

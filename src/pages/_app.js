@@ -3,6 +3,10 @@ import "~/styles/globals.css";
 import { StrictMode, Fragment } from "react";
 import Head from "next/head";
 
+import { makeServer } from "~/miragejs/server";
+
+makeServer();
+
 function App({ Component, pageProps }) {
   const { shell: Shell = Fragment } = Component;
 
