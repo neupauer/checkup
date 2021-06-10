@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import LayoutContent from "~/components/console-layout-content";
 import Layout, { useLayout } from "~/components/console-layout";
 import Screen from "~/components/screen";
 import Link from "~/components/link";
-
+import { DbContext } from "~/components/db-context";
 function Reports({}) {
   const { openSidebar } = useLayout();
-  const [reports, setReports] = useState();
+
+  const {
+    state,
+    state: { collection },
+  } = useContext(DbContext);
 
   return (
     <Screen title="Reports">
@@ -116,35 +120,33 @@ function Reports({}) {
                           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                               <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+
                                 <table className="min-w-full divide-y divide-gray-200">
                                   <thead>
                                     <tr>
-                                      <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
-                                        Caregiver
-                                      </th>
                                       <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
                                         Date
                                       </th>
                                       <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
                                         Tiem of shift
                                       </th>
-                                      {/* <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
-                                        Caregiver
-                                      </th> */}
+
+                                      <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase bg-gray-50">
+                                        A Carer
+                                      </th>
+
                                       <th className="px-6 py-3 bg-gray-50" />
                                     </tr>
                                   </thead>
                                   <tbody className="bg-white divide-y divide-gray-200">
-                                    {(reports || []).map((report) => (
+                                    {(collection["daily-report-chart"] || []).map((report) => (
                                       <tr key={report.id}>
-                                        <td className="px-6 py-4 text-sm font-medium leading-5 text-gray-900 whitespace-no-wrap">
-                                          {report["fullName"]}
-                                        </td>
-
                                         <td className="px-6 py-4 whitespace-no-wrap">
                                           <div className="flex items-center">
                                             <div className="">
-                                              <div className="text-sm leading-5 text-gray-900">{report["date"]}</div>
+                                              <div className="text-sm leading-5 text-gray-900">
+                                                {new Date(report["date"]).toLocaleDateString()}
+                                              </div>
                                               {/* <div className="text-sm leading-5 text-gray-500">
                                                 {report["time-of-shift"]}
                                               </div> */}
@@ -153,7 +155,7 @@ function Reports({}) {
                                         </td>
                                         <td className="px-6 py-4 whitespace-no-wrap">
                                           <span className="text-sm leading-5 text-gray-900">
-                                            {report["timeOfShift"]}
+                                            {report["time-of-shift"]}
                                           </span>
                                         </td>
                                         {/* <td className="px-6 py-4 whitespace-no-wrap">
@@ -162,8 +164,24 @@ function Reports({}) {
                                           </span>
                                         </td> */}
 
+                                        <td className="px-6 py-4 whitespace-no-wrap">
+                                          <div className="flex items-center justify-between min-w-0 space-x-3">
+                                            <img
+                                              className="flex-shrink-0 w-8 h-8 bg-gray-300 rounded-full"
+                                              src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                              alt="Avatar"
+                                            />
+                                            <div className="flex-1 min-w-0 text-left">
+                                              <h2 className="text-xs font-medium leading-5 text-gray-900 truncate">
+                                                Dr. Jean Doe
+                                              </h2>
+                                              <p className="text-xs leading-5 text-gray-500 truncate">jean@doe.com</p>
+                                            </div>
+                                          </div>
+                                        </td>
+
                                         <td className="px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap">
-                                          <Link href={`/reports/show/${report.id}`}>
+                                          <Link href={`/reports/show/${report["_id"]}`}>
                                             <a className="text-blue-600 hover:text-blue-900">Show</a>
                                           </Link>
                                         </td>

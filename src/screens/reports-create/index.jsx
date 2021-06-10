@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
+import { v4 as uuid } from "uuid";
 import React from "react";
 
+import db from "~/integrations/pouchdb";
 import LayoutContent from "~/components/console-layout-content";
 import Layout, { useLayout } from "~/components/console-layout";
 import Screen from "~/components/screen";
@@ -11,6 +13,16 @@ function Reports({}) {
   const { push } = useRouter();
   const { openSidebar } = useLayout();
   const { register, handleSubmit, watch, errors, formState } = useForm();
+
+  const onSubmit = async (data) => {
+    await db.put({
+      ...data,
+      carerId: 1,
+      _id: uuid(),
+      timestamp: Date.now(),
+      type: "daily-report-chart",
+    });
+  };
 
   return (
     <Screen title="Create | Reports">
@@ -110,7 +122,7 @@ function Reports({}) {
                   <div className="py-6">
                     {/* Description list with inline editing */}
                     <div className="mt-10">
-                      <form onSubmit={() => {}} id="form" className="space-y-10">
+                      <form onSubmit={handleSubmit(onSubmit)} id="form" className="space-y-10">
                         <>
                           <div className="">
                             <div className="lg:grid lg:grid-cols-5 lg:gap-6">
@@ -278,6 +290,7 @@ function Reports({}) {
                                       id="prn-effective"
                                       name="prn-effective"
                                       className="form-checkbox"
+                                      ref={register()}
                                     />
                                     <label
                                       htmlFor="prn-effective"
@@ -388,13 +401,12 @@ function Reports({}) {
                                   Date
                                 </label>
                                 <input
-                                  type="text"
+                                  type="date"
                                   id="date"
                                   name="date"
                                   className="block w-full mt-1 transition duration-150 ease-in-out form-textarea sm:text-sm sm:leading-5"
                                   placeholder=""
-                                  readOnly
-                                  defaultValue={new Date().toLocaleDateString()}
+                                  defaultValue={new Date().toISOString().slice(0, 10)}
                                   ref={register()}
                                 />
                               </div>
@@ -406,15 +418,17 @@ function Reports({}) {
                                 >
                                   Time of shift
                                 </label>
-                                <input
+                                <select
                                   type="text"
                                   id="time-of-shift"
                                   name="time-of-shift"
                                   className="block w-full mt-1 transition duration-150 ease-in-out form-textarea sm:text-sm sm:leading-5"
-                                  placeholder=""
-                                  defaultValue="20:00 - 8:00"
+                                  defaultValue="8:00 - 20:00"
                                   ref={register()}
-                                />
+                                >
+                                  <option>8:00 - 20:00</option>
+                                  <option>20:00 - 8:00</option>
+                                </select>
                               </div>
 
                               <div className="mt-5 rounded-md shadow-sm lg:mt-0">

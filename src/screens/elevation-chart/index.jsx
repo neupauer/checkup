@@ -19,7 +19,7 @@ function ElevationChart() {
     state: { collection },
   } = useContext(DbContext);
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, errors } = useForm({
     defaultValues: {
       date: new Date().toISOString().substr(0, 10),
       time: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
@@ -30,6 +30,7 @@ function ElevationChart() {
     await db.put({
       ...data,
       _id: uuid(),
+      carerId: 1,
       timestamp: Date.now(),
       type: "elevation-chart",
     });
@@ -105,7 +106,12 @@ function ElevationChart() {
                         <p className="mt-0.5 text-xs italic text-gray-600">
                           Enter the head elevation angle in degrees. For example, 20.
                         </p>
-                        <input type="text" name="angle" id="angle" ref={register()} className="w-full mt-1" />
+                        <input type="text" name="angle" id="angle" ref={register({ required: true })} className="w-full mt-1" />
+                        {errors.angle && (
+                          <p className="mt-1 text-xs italic text-red-600" role="alert">
+                            This field is required.
+                          </p>
+                        )}
                       </div>
 
                       <div>
@@ -116,7 +122,12 @@ function ElevationChart() {
                           Enter the number of minutes. For example, 40.
                         </p>
                         <div className="mt-1">
-                          <input type="text" name="duration" id="duration" ref={register()} className="w-full" />
+                          <input type="text" name="duration" id="duration" ref={register({ required: true })} className="w-full" />
+                          {errors.duration && (
+                          <p className="mt-1 text-xs italic text-red-600" role="alert">
+                            This field is required.
+                          </p>
+                        )}
                         </div>
                       </div>
 

@@ -19,7 +19,7 @@ function PressureReliefPositioningChart() {
     state: { collection },
   } = useContext(DbContext);
 
-  const { register, handleSubmit } = useForm({
+  const { errors, register, handleSubmit } = useForm({
     defaultValues: {
       date: new Date().toISOString().substr(0, 10),
       time: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
@@ -29,6 +29,7 @@ function PressureReliefPositioningChart() {
   const onSubmit = async (data) => {
     await db.put({
       ...data,
+      carerId: 1,
       _id: uuid(),
       timestamp: Date.now(),
       type: "pressure-relief-positioning-chart",
@@ -103,7 +104,24 @@ function PressureReliefPositioningChart() {
                           Position
                         </label>
                         <p className="mt-0.5 text-xs italic text-gray-600">LHS</p>
-                        <input type="text" name="position" id="position" ref={register()} className="w-full mt-1" />
+                        <input
+                          list="p-id"
+                          type="text"
+                          name="position"
+                          id="position"
+                          ref={register({ required: true })}
+                          className="w-full mt-1"
+                        />
+                        <datalist id="p-id">
+                          <option value="Left">Left</option>
+                          <option value="Right">Right</option>
+                          <option value="Back">Back</option>
+                        </datalist>
+                        {errors.position && (
+                          <p className="mt-1 text-xs italic text-red-600" role="alert">
+                            This field is required.
+                          </p>
+                        )}
                       </div>
 
                       <div>
@@ -114,7 +132,22 @@ function PressureReliefPositioningChart() {
                           For example, Small non-blanching red patch on sacrum.
                         </p>
                         <div className="mt-1">
-                          <input type="text" name="skin" id="skin" ref={register()} className="w-full" />
+                          <input
+                            type="text"
+                            name="skin"
+                            id="skin"
+                            list="s-id"
+                            ref={register({ required: true })}
+                            className="w-full"
+                          />
+                          <datalist id="s-id">
+                            <option>No concerns</option>
+                          </datalist>
+                          {errors.skin && (
+                            <p className="mt-1 text-xs italic text-red-600" role="alert">
+                              This field is required.
+                            </p>
+                          )}
                         </div>
                       </div>
 

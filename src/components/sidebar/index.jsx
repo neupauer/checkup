@@ -92,7 +92,18 @@ function Sidebar() {
                       }
                     )}
                   >
-                    Child Daily Care
+                    <span>Child Daily Care</span>
+
+                    {collection?.["daily-report-chart"]?.length && (
+                      <span
+                        className={clsx(
+                          active ? "bg-white" : "bg-gray-100 text-gray-600 group-hover:bg-gray-200",
+                          "ml-auto inline-block py-0.5 px-3 text-xs rounded-full"
+                        )}
+                      >
+                        {collection?.["daily-report-chart"]?.length}
+                      </span>
+                    )}
                   </a>
                 )}
               </Link>

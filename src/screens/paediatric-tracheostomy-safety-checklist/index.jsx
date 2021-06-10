@@ -36,6 +36,7 @@ function PaediatricTracheostomySafetyChecklist() {
     await db.put({
       ...data,
       ...(doc ? { _rev: doc._rev } : {}),
+      carerId: 1,
       _id: `${data.date}::${data.shift}`,
       timestamp: Date.now(),
       type: "paediatric-tracheostomy-safety-checklist",
